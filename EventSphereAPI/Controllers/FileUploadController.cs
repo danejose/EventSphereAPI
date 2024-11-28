@@ -34,9 +34,9 @@ namespace FileUploadApi.Controllers
                 _logger.LogInformation($"File received: {file.FileName}, Size: {file.Length} bytes");
 
                 if (file.Length > 10 * 1024 * 1024)
-                    return BadRequest("File size exceeds maximum limit of 10MB.");
+                    return BadRequest("File size exceeds maximum limit of 500MB.");
 
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf", ".docx" };
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf", ".docx", ".mp4"};
                 var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
                 if (!allowedExtensions.Contains(fileExtension))
                     return BadRequest("File type not allowed.");
