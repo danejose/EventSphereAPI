@@ -21,13 +21,17 @@ namespace FileUploadApi.Controllers
 
         [HttpPost]
         [ActionName("upload")]
-
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile file)
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile? file)
         {
             try
             {
                 if (file == null || file.Length == 0)
+                {
+                    _logger.LogWarning("No file uploaded.");
                     return BadRequest("No file uploaded.");
+                }
+
+                _logger.LogInformation($"File received: {file.FileName}, Size: {file.Length} bytes");
 
                 if (file.Length > 10 * 1024 * 1024)
                     return BadRequest("File size exceeds maximum limit of 10MB.");
@@ -65,6 +69,5 @@ namespace FileUploadApi.Controllers
             }
         }
 
-      
     }
 }
