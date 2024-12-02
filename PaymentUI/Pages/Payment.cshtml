@@ -1,0 +1,46 @@
+﻿@page
+@model PaymentUI.Pages.PaymentModel
+@{
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+</head>
+<body>
+    <h2>Make a Payment</h2>
+    <button id="payNow">Pay Now</button>
+
+<script>
+   document.getElementById("payNow").addEventListener("click", function () {
+    fetch('https://localhost:7282/api/PhonePe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        // Check if the response is OK (status 200-299)
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Try to parse as JSON
+    })
+    .then(data => {
+        if (data && data.redirectUrl) {
+            // Redirect to the PhonePe URL provided in the response
+            window.location.href = data.redirectUrl;
+        } else {
+            alert("Error initiating payment.");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred while processing the payment request.");
+    });
+});
+
+</script>
+
+</body>
+</html>
